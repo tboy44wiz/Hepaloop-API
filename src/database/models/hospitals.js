@@ -1,0 +1,37 @@
+'use strict';
+
+import { v4 as uuidV4} from "uuid";
+import { Model } from 'sequelize';
+
+module.exports = (sequelize, DataTypes) => {
+  class Hospitals extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+    }
+  };
+  Hospitals.init({
+    hospitals_name: DataTypes.STRING,
+    hospitals_email: DataTypes.STRING,
+    hospitals_phone: DataTypes.STRING,
+    hospitals_address: DataTypes.STRING,
+    hospitals_city: DataTypes.STRING,
+    hospitals_state: DataTypes.STRING,
+    hospitals_country: DataTypes.STRING,
+  }, {
+    sequelize,
+    modelName: 'Hospitals',
+    freezeTableName: true
+  });
+
+  //  Before the Records will be created, let's d the following.
+  Hospitals.beforeCreate(async (hospital) => {
+    hospital.id = await uuidV4();
+  });
+
+  return Hospitals;
+};
