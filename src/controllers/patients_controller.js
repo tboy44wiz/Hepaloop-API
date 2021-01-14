@@ -1,6 +1,8 @@
 'use strict';
 
 import jwt from 'jsonwebtoken'
+import bcrypt from 'bcryptjs';
+
 import models from '../database/models';
 import Response from '../utils/response';
 import JoiValidator from "../utils/joi_validator";

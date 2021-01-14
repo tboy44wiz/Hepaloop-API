@@ -14,7 +14,9 @@ class JoiValidator {
         doctors_phone: Joi.string().required(),
         doctors_password: Joi.string().required()
             .pattern(new RegExp('^[a-zA-Z0-9]{6,30}$'))
-            .error(new Error("Password must be at least 6 characters and alphanumeric."))
+            .error(new Error("Password must be at least 6 characters and alphanumeric.")),
+        doctors_confirmPassword: Joi.string().required().valid(Joi.ref('doctors_password')),
+        user_type: Joi.string().required()
     });
 
     //  Doctors Update Validation Schema.
@@ -24,15 +26,17 @@ class JoiValidator {
         doctors_phone: Joi.string(),
         doctors_password: Joi.string()
             .pattern(new RegExp('^[a-zA-Z0-9]{6,30}$'))
-            .error(new Error("Password must be at least 6 characters and alphanumeric."))
+            .error(new Error("Password must be at least 6 characters and alphanumeric.")),
+        doctors_confirmPassword: Joi.string().required().valid(Joi.ref('doctors_password')),
     });
 
-    //  Doctors Login Schema.
+    //  Doctors Login Validation Schema.
     static doctorsLoginSchema = Joi.object({
         doctors_email: Joi.string().required().email(),
         doctors_password: Joi.string().required()
             .pattern(new RegExp('^[a-zA-Z0-9]{6,30}$'))
-            .error(new Error("Password must be at least 6 characters and alphanumeric."))
+            .error(new Error("Password must be at least 6 characters and alphanumeric.")),
+        user_type: Joi.string().required()
     });
 
 
@@ -55,7 +59,9 @@ class JoiValidator {
         patients_weight: Joi.string(),
         patients_password: Joi.string().required()
             .pattern(new RegExp('^[a-zA-Z0-9]{6,30}$'))
-            .error(new Error("Password must be at least 6 characters and alphanumeric."))
+            .error(new Error("Password must be at least 6 characters and alphanumeric.")),
+        patients_confirmPassword: Joi.string().required().valid(Joi.ref('patients_password')),
+        user_type: Joi.string().required()
     });
 
     //  Patients Update Validation Schema.
@@ -74,15 +80,17 @@ class JoiValidator {
         patients_weight: Joi.string(),
         patients_password: Joi.string()
             .pattern(new RegExp('^[a-zA-Z0-9]{6,30}$'))
-            .error(new Error("Password must be at least 6 characters and alphanumeric."))
+            .error(new Error("Password must be at least 6 characters and alphanumeric.")),
+        patients_confirmPassword: Joi.string().required().valid(Joi.ref('patients_password')),
     });
 
-    //  Patients Login Schema.
+    //  Patients Login Validation Schema.
     static patientsLoginSchema = Joi.object({
         patients_email: Joi.string().required().email(),
         patients_password: Joi.string().required()
             .pattern(new RegExp('^[a-zA-Z0-9]{6,30}$'))
-            .error(new Error("Password must be at least 6 characters and alphanumeric."))
+            .error(new Error("Password must be at least 6 characters and alphanumeric.")),
+        user_type: Joi.string().required()
     });
 
 
@@ -95,6 +103,7 @@ class JoiValidator {
         hospitals_email: Joi.string().required().email(),
         hospitals_address: Joi.string().required(),
         hospitals_phone: Joi.string().required(),
+        user_type: Joi.string().required()
     });
 
     //  Hospitals Update Validation Schema.
@@ -120,7 +129,9 @@ class JoiValidator {
         pharmacy_country: Joi.string(),
         pharmacy_password: Joi.string()
             .pattern(new RegExp('^[a-zA-Z0-9]{6,30}$'))
-            .error(new Error("Password must be at least 6 characters and alphanumeric."))
+            .error(new Error("Password must be at least 6 characters and alphanumeric.")),
+        pharmacy_confirmPassword: Joi.string().required().valid(Joi.ref('pharmacy_password')),
+        user_type: Joi.string().required()
     });
 
     //  Pharmacy Update Validation Schema.
@@ -134,7 +145,17 @@ class JoiValidator {
         pharmacy_country: Joi.string(),
         pharmacy_password: Joi.string()
             .pattern(new RegExp('^[a-zA-Z0-9]{6,30}$'))
-            .error(new Error("Password must be at least 6 characters and alphanumeric."))
+            .error(new Error("Password must be at least 6 characters and alphanumeric.")),
+        pharmacy_confirmPassword: Joi.string().required().valid(Joi.ref('pharmacy_password')),
+    });
+
+    //  Pharmacy Login Validation Schema.
+    static pharmacyLoginSchema = Joi.object({
+        pharmacy_email: Joi.string().email(),
+        pharmacy_password: Joi.string()
+            .pattern(new RegExp('^[a-zA-Z0-9]{6,30}$'))
+            .error(new Error("Password must be at least 6 characters and alphanumeric.")),
+        user_type: Joi.string().required()
     });
 
 }

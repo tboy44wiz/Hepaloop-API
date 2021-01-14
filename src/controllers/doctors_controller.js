@@ -84,7 +84,7 @@ class DoctorsController {
             const response = new Response(
                 true,
                 200,
-                'Successfully created a doctor.',
+                'Successfully retrieved all doctors.',
                 { doctors }
             );
             return res.status(response.code).json(response);

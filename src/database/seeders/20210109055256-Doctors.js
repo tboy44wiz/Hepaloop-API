@@ -16,6 +16,7 @@ module.exports = {
     */
     await queryInterface.bulkInsert('Doctors', [{
       id: uuidV4(),
+      user_type: 'Doctor',
       doctors_name: 'John Doe',
       doctors_email: 'john_doe@gmail.com',
       doctors_phone: '08033407000',

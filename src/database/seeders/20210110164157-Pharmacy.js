@@ -16,6 +16,7 @@ module.exports = {
      */
     await queryInterface.bulkInsert('Pharmacy', [{
       id: uuidV4(),
+      user_type: 'Pharmacy',
       pharmacy_name: 'Avon Pharmacy',
       pharmacy_email: 'avon_pharmacy@gmail.com',
       pharmacy_phone: '08033407000',

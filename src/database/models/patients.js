@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     patients_height: DataTypes.INTEGER,
     patients_weight: DataTypes.INTEGER,
     purpose_for_treatment: DataTypes.STRING,
+    user_type: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Patients',

@@ -59,6 +59,10 @@ module.exports = {
         type: Sequelize.ENUM('0', '1', '2', '3', '4', '5'),
         defaultValue: '0'
       },
+      user_type: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

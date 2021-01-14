@@ -27,7 +27,8 @@ module.exports = (sequelize, DataTypes) => {
     doctors_state: DataTypes.STRING,
     doctors_country: DataTypes.STRING,
     doctors_hospital: DataTypes.STRING,
-    doctors_rating: DataTypes.ENUM('0', '1', '2', '3', '4', '5')
+    doctors_rating: DataTypes.ENUM('0', '1', '2', '3', '4', '5'),
+    user_type: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Doctors',

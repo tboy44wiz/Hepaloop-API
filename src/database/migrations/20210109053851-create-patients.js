@@ -67,6 +67,10 @@ module.exports = {
         allowNull: true,
         type: Sequelize.ENUM('Blood Pressure', 'Blood Sugar', 'Antenatal')
       },
+      user_type: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

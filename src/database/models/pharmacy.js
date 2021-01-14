@@ -23,7 +23,8 @@ module.exports = (sequelize, DataTypes) => {
     pharmacy_address: DataTypes.STRING,
     pharmacy_city: DataTypes.STRING,
     pharmacy_state: DataTypes.STRING,
-    pharmacy_country: DataTypes.STRING
+    pharmacy_country: DataTypes.STRING,
+    user_type: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Pharmacy',
