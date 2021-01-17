@@ -160,15 +160,35 @@ class PatientsController {
                 return res.status(response.code).json(response);
             }
 
-            //  First check if a record has the staff_email existing.
-            const foundItem = await Patients.findOne({
-                where: { patients_email: value.patients_email }
-            });
-            if (foundItem) {
+            if (value.patients_email) {
+                //  First check if a record has the staff_email existing.
+                const foundItem = await Patients.findOne({
+                    where: { patients_email: value.patients_email }
+                });
+                if (foundItem) {
+                    const response =  new Response(
+                        false,
+                        409,
+                        "This email address already exist. Kindly use another email address."
+                    );
+                    return res.status(response.code).json(response);
+                }
+
+                //  If No record found with the same patients email, then update.
+                const updatedPatient = await Patients.update({ ...value }, { where: { id } });
+                if (updatedPatient[0] === 0) {
+                    const response =  new Response(
+                        false,
+                        400,
+                        "Failed to update patient."
+                    );
+                    return res.status(response.code).json(response);
+                }
+
                 const response =  new Response(
-                    false,
-                    409,
-                    "This email address already exist. Kindly use another email address."
+                    true,
+                    200,
+                    "Patient updated successfully."
                 );
                 return res.status(response.code).json(response);
             }
@@ -273,7 +293,7 @@ class PatientsController {
                 return res.status(response.code).json(response);
             }
 
-            const { id, patients_name, patients_email, patients_phone } = patient;
+            const { id, patients_name, patients_email, patients_phone, patients_avatar } = patient;
 
             //  Create a Token that will be passed to the response.
             const token = await jwt.sign(
@@ -287,6 +307,7 @@ class PatientsController {
                 patients_name,
                 patients_email,
                 patients_phone,
+                patients_avatar,
                 token
             }
 
@@ -350,7 +371,7 @@ class PatientsController {
                 return res.status(response.code).json(response);
             }
 
-            const { id, patients_name, patients_email, patients_phone } = patient;
+            const { id, patients_name, patients_email, patients_phone, patients_avatar } = patient;
 
             //  Create a Token that will be passed to the response.
             const token = await jwt.sign(
@@ -364,6 +385,7 @@ class PatientsController {
                 patients_name,
                 patients_email,
                 patients_phone,
+                patients_avatar,
                 token
             }
 

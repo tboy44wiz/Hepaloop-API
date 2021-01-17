@@ -17,8 +17,8 @@ module.exports = {
     await queryInterface.bulkInsert('Doctors', [{
       id: uuidV4(),
       user_type: 'Doctor',
-      doctors_name: 'John Doe',
-      doctors_email: 'john_doe@gmail.com',
+      doctors_name: 'Jane Doe',
+      doctors_email: 'j_doe@gmail.com',
       doctors_phone: '08033407000',
       doctors_password: bcrypt.hashSync('password123', 10),
       doctors_specialty: 'Surgeon',
@@ -28,6 +28,7 @@ module.exports = {
       doctors_country: 'Nigeria',
       doctors_hospital: 'Avon Clinic Masha',
       doctors_rating: '5',
+      doctors_avatar: 'https://mhpdoctor.com/wp-content/sabai/File/files/l_24e839fcb31a2d2ae79861b46482a8a8.png',
       createdAt: new Date(),
       updatedAt: new Date()
     }], {});

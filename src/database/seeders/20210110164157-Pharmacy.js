@@ -25,6 +25,7 @@ module.exports = {
       pharmacy_city: 'Surulere',
       pharmacy_state: 'Lagos',
       pharmacy_country: 'Nigeria',
+      pharmacy_logo: 'https://cdn1.vectorstock.com/i/thumbs/57/05/abstract-logo-green-cross-pharmacy-vector-6235705.jpg',
       createdAt: new Date(),
       updatedAt: new Date()
     }], {});

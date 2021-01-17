@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     pharmacy_city: DataTypes.STRING,
     pharmacy_state: DataTypes.STRING,
     pharmacy_country: DataTypes.STRING,
+    pharmacy_logo: DataTypes.STRING,
     user_type: DataTypes.STRING
   }, {
     sequelize,

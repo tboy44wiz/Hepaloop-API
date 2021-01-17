@@ -57,11 +57,15 @@ module.exports = {
       },
       patients_height: {
         allowNull: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       patients_weight: {
         allowNull: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
+      },
+      patients_avatar: {
+        allowNull: true,
+        type: Sequelize.STRING
       },
       purpose_for_treatment: {
         allowNull: true,

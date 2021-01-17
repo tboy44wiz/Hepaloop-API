@@ -273,7 +273,7 @@ class HospitalsController {
                 return res.status(response.code).json(response);
             }
 
-            const { id, hospitals_name, hospitals_email, hospitals_phone, createdAt, updatedAt } = hospital;
+            const { id, hospitals_name, hospitals_email, hospitals_phone, hospitals_logo, createdAt } = hospital;
 
             //  Create a Token that will be passed to the response.
             const token = await jwt.sign(
@@ -287,8 +287,8 @@ class HospitalsController {
                 hospitals_name,
                 hospitals_email,
                 hospitals_phone,
+                hospitals_logo,
                 createdAt,
-                updatedAt,
                 token
             }
 
@@ -352,7 +352,7 @@ class HospitalsController {
                 return res.status(response.code).json(response);
             }
 
-            const { id, hospitals_name, hospitals_email, hospitals_phone } = hospital;
+            const { id, hospitals_name, hospitals_email, hospitals_phone, hospitals_logo } = hospital;
 
             //  Create a Token that will be passed to the response.
             const token = await jwt.sign(
@@ -366,6 +366,7 @@ class HospitalsController {
                 hospitals_name,
                 hospitals_email,
                 hospitals_phone,
+                hospitals_logo,
                 token
             }
 

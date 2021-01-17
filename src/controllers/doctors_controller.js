@@ -52,7 +52,7 @@ class DoctorsController {
             return res.status(response.code).json(response);
 
         } catch (error) {
-            console.log(`ERROR::: ${ error }`);
+            console.log(`ERROR::: ${error}`);
 
             const response = new Response(
                 false,
@@ -90,7 +90,7 @@ class DoctorsController {
             return res.status(response.code).json(response);
 
         } catch (error) {
-            console.log(`ERROR::: ${ error }`);
+            console.log(`ERROR::: ${error}`);
 
             const response = new Response(
                 false,
@@ -130,7 +130,7 @@ class DoctorsController {
             return res.status(response.code).json(response);
 
         } catch (error) {
-            console.log(`ERROR::: ${ error }`);
+            console.log(`ERROR::: ${error}`);
 
             const response = new Response(
                 false,
@@ -149,6 +149,8 @@ class DoctorsController {
             const { id } = req.params;
             const requestBody = req.body;
 
+            console.log(payload);
+
             //  Validate the Request Body.
             const { error, value } = await JoiValidator.doctorsUpdateSchema.validate(requestBody);
             if (error) {
@@ -159,16 +161,37 @@ class DoctorsController {
                 );
                 return res.status(response.code).json(response);
             }
+            console.log(value);
 
             //  First check if a record has the staff_email existing.
-            const foundItem = await Doctors.findOne({
-                where: { doctors_email: value.doctors_email }
-            });
-            if (foundItem) {
-                const response =  new Response(
-                    false,
-                    409,
-                    "This email address already exist. Kindly use another email address."
+            if (value.doctors_email) {
+                const foundItem = await Doctors.findOne({
+                    where: { doctors_email: value.doctors_email }
+                });
+                if (foundItem) {
+                    const response = new Response(
+                        false,
+                        409,
+                        "This email address already exist. Kindly use another email address."
+                    );
+                    return res.status(response.code).json(response);
+                }
+
+                //  If No record found with the same doctors email, then update.
+                const updatedDoctor = await Doctors.update({ ...value }, { where: { id } });
+                if (updatedDoctor[0] === 0) {
+                    const response = new Response(
+                        false,
+                        400,
+                        "Failed to update doctor."
+                    );
+                    return res.status(response.code).json(response);
+                }
+
+                const response = new Response(
+                    true,
+                    200,
+                    "Doctor updated successfully."
                 );
                 return res.status(response.code).json(response);
             }
@@ -176,7 +199,7 @@ class DoctorsController {
             //  If No record found with the same doctors email, then update.
             const updatedDoctor = await Doctors.update({ ...value }, { where: { id } });
             if (updatedDoctor[0] === 0) {
-                const response =  new Response(
+                const response = new Response(
                     false,
                     400,
                     "Failed to update doctor."
@@ -184,7 +207,8 @@ class DoctorsController {
                 return res.status(response.code).json(response);
             }
 
-            const response =  new Response(
+
+            const response = new Response(
                 true,
                 200,
                 "Doctor updated successfully."
@@ -192,7 +216,7 @@ class DoctorsController {
             return res.status(response.code).json(response);
 
         } catch (error) {
-            console.log(`ERROR::: ${ error }`);
+            console.log(`ERROR::: ${error}`);
 
             const response = new Response(
                 false,
@@ -229,7 +253,7 @@ class DoctorsController {
             return res.status(response.code).json(response);
 
         } catch (error) {
-            console.log(`ERROR::: ${ error }`);
+            console.log(`ERROR::: ${error}`);
 
             const response = new Response(
                 false,
@@ -258,6 +282,7 @@ class DoctorsController {
                 );
                 return res.status(response.code).json(response);
             }
+            console.log(value);
 
             //  Check if Doctor already exist and create a new Doctor using the "value" gotten from the validated object.
             const [doctor, created] = await Doctors.findOrCreate({
@@ -273,12 +298,12 @@ class DoctorsController {
                 return res.status(response.code).json(response);
             }
 
-            const { id, doctors_name, doctors_email, doctors_phone, createdAt, updatedAt } = doctor;
+            const { id, doctors_name, doctors_email, doctors_phone, doctors_avatar, createdAt } = doctor;
 
             //  Create a Token that will be passed to the response.
             const token = await jwt.sign(
                 { id, doctors_name, doctors_email, doctors_phone },
-                `${ process.env.JWT_SECRET_KEY }`,
+                `${process.env.JWT_SECRET_KEY}`,
                 { expiresIn: "1d" }
             );
 
@@ -287,8 +312,8 @@ class DoctorsController {
                 doctors_name,
                 doctors_email,
                 doctors_phone,
+                doctors_avatar,
                 createdAt,
-                updatedAt,
                 token
             }
 
@@ -296,12 +321,12 @@ class DoctorsController {
                 true,
                 201,
                 "Successfully created a doctor.",
-                { doctors: formattedResponse }
+                { doctor: formattedResponse }
             );
             return res.status(response.code).json(response);
 
         } catch (error) {
-            console.log(`ERROR::: ${ error }`);
+            console.log(`ERROR::: ${error}`);
 
             const response = new Response(
                 false,
@@ -342,7 +367,7 @@ class DoctorsController {
             }
 
             //  Compare the encrypted doctors_password.
-            const isPasswordMatched = await bcrypt.compareSync(value.doctors_password, doctor.doctors_password );
+            const isPasswordMatched = await bcrypt.compareSync(value.doctors_password, doctor.doctors_password);
             if (!isPasswordMatched) {
                 const response = new Response(
                     false,
@@ -352,12 +377,12 @@ class DoctorsController {
                 return res.status(response.code).json(response);
             }
 
-            const { id, doctors_name, doctors_email, doctors_phone } = doctor;
+            const { id, doctors_name, doctors_email, doctors_phone, doctors_avatar } = doctor;
 
             //  Create a Token that will be passed to the response.
             const token = await jwt.sign(
                 { id, doctors_name, doctors_email, doctors_phone },
-                `${ process.env.JWT_SECRET_KEY }`,
+                `${process.env.JWT_SECRET_KEY}`,
                 { expiresIn: "1d" }
             );
 
@@ -366,6 +391,7 @@ class DoctorsController {
                 doctors_name,
                 doctors_email,
                 doctors_phone,
+                doctors_avatar,
                 token
             }
 
@@ -378,7 +404,7 @@ class DoctorsController {
             res.status(response.code).json(response);
 
         } catch (error) {
-            console.log(`ERROR::: ${ error }`);
+            console.log(`ERROR::: ${error}`);
 
             const response = new Response(
                 false,
@@ -404,7 +430,7 @@ class DoctorsController {
             return res.status(response.code).json(response);
 
         } catch (error) {
-            console.log(`ERROR::: ${ error }`);
+            console.log(`ERROR::: ${error}`);
 
             const response = new Response(
                 false,

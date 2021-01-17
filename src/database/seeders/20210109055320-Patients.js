@@ -30,6 +30,7 @@ module.exports = {
       patients_country: 'Nigeria',
       patients_height: 180,
       patients_weight: 72,
+      patients_avatar: 'https://www.clipartmax.com/png/middle/27-271750_pix-for-woman-face-clipart-woman-images-clip-art.png',
       purpose_for_treatment: 'Blood Pressure',
       createdAt: new Date(),
       updatedAt: new Date()

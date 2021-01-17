@@ -37,6 +37,10 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING
       },
+      hospitals_logo: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
       user_type: {
         allowNull: false,
         type: Sequelize.STRING

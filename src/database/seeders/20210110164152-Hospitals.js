@@ -23,6 +23,7 @@ module.exports = {
       hospitals_city: 'Surulere',
       hospitals_state: 'Lagos',
       hospitals_country: 'Nigeria',
+      hospitals_logo: 'https://www.eatlogos.com/health_logos/png/logo_for_hospitel_plus_design.png',
       createdAt: new Date(),
       updatedAt: new Date()
     }], {});

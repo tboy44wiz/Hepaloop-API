@@ -160,17 +160,38 @@ class PharmacyController {
                 return res.status(response.code).json(response);
             }
 
-            //  First check if a record has the staff_email existing.
-            const foundItem = await Pharmacy.findOne({
-                where: { pharmacy_email: value.pharmacy_email }
-            });
-            if (foundItem) {
+            if (value.pharmacy_email) {
+                //  First check if a record has the staff_email existing.
+                const foundItem = await Pharmacy.findOne({
+                    where: { pharmacy_email: value.pharmacy_email }
+                });
+                if (foundItem) {
+                    const response =  new Response(
+                        false,
+                        409,
+                        "This email address already exist. Kindly use another email address."
+                    );
+                    return res.status(response.code).json(response);
+                }
+
+                //  If No record found with the same pharmacy email, then update.
+                const updatedPharmacy = await Pharmacy.update({ ...value }, { where: { id } });
+                if (updatedPharmacy[0] === 0) {
+                    const response =  new Response(
+                        false,
+                        400,
+                        "Failed to update pharmacy."
+                    );
+                    return res.status(response.code).json(response);
+                }
+
                 const response =  new Response(
-                    false,
-                    409,
-                    "This email address already exist. Kindly use another email address."
+                    true,
+                    200,
+                    "Pharmacy updated successfully."
                 );
                 return res.status(response.code).json(response);
+
             }
 
             //  If No record found with the same pharmacy email, then update.
@@ -274,7 +295,7 @@ class PharmacyController {
                 return res.status(response.code).json(response);
             }
 
-            const { id, pharmacy_name, pharmacy_email, pharmacy_phone, createdAt, updatedAt } = pharmacy;
+            const { id, pharmacy_name, pharmacy_email, pharmacy_phone, pharmacy_logo, createdAt } = pharmacy;
 
             //  Create a Token that will be passed to the response.
             const token = await jwt.sign(
@@ -288,8 +309,8 @@ class PharmacyController {
                 pharmacy_name,
                 pharmacy_email,
                 pharmacy_phone,
+                pharmacy_logo,
                 createdAt,
-                updatedAt,
                 token
             }
 
@@ -353,7 +374,7 @@ class PharmacyController {
                 return res.status(response.code).json(response);
             }
 
-            const { id, pharmacy_name, pharmacy_email, pharmacy_phone } = pharmacy;
+            const { id, pharmacy_name, pharmacy_email, pharmacy_phone, pharmacy_logo } = pharmacy;
 
             //  Create a Token that will be passed to the response.
             const token = await jwt.sign(
@@ -367,6 +388,7 @@ class PharmacyController {
                 pharmacy_name,
                 pharmacy_email,
                 pharmacy_phone,
+                pharmacy_logo,
                 token
             }
 

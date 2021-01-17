@@ -27,8 +27,9 @@ module.exports = (sequelize, DataTypes) => {
     patients_city: DataTypes.STRING,
     patients_state: DataTypes.STRING,
     patients_country: DataTypes.STRING,
-    patients_height: DataTypes.INTEGER,
-    patients_weight: DataTypes.INTEGER,
+    patients_height: DataTypes.STRING,
+    patients_weight: DataTypes.STRING,
+    patients_avatar: DataTypes.STRING,
     purpose_for_treatment: DataTypes.STRING,
     user_type: DataTypes.STRING
   }, {

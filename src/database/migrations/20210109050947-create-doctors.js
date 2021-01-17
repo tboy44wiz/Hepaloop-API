@@ -54,6 +54,10 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING
       },
+      doctors_avatar: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
       doctors_rating: {
         allowNull: true,
         type: Sequelize.ENUM('0', '1', '2', '3', '4', '5'),
