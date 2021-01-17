@@ -42,8 +42,9 @@ module.exports = {
         type: Sequelize.STRING
       },
       pharmacy_logo: {
-        allowNull: true,
-        type: Sequelize.STRING
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: 'https://cdn1.vectorstock.com/i/thumbs/57/05/abstract-logo-green-cross-pharmacy-vector-6235705.jpg',
       },
       user_type: {
         allowNull: false,

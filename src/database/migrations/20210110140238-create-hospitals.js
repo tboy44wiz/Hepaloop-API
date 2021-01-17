@@ -38,8 +38,9 @@ module.exports = {
         type: Sequelize.STRING
       },
       hospitals_logo: {
-        allowNull: true,
-        type: Sequelize.STRING
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: 'https://www.eatlogos.com/health_logos/png/logo_for_hospitel_plus_design.png',
       },
       user_type: {
         allowNull: false,

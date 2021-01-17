@@ -64,8 +64,9 @@ module.exports = {
         type: Sequelize.STRING
       },
       patients_avatar: {
-        allowNull: true,
-        type: Sequelize.STRING
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: 'https://www.clipartmax.com/png/middle/27-271750_pix-for-woman-face-clipart-woman-images-clip-art.png',
       },
       purpose_for_treatment: {
         allowNull: true,

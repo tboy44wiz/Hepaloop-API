@@ -55,8 +55,9 @@ module.exports = {
         type: Sequelize.STRING
       },
       doctors_avatar: {
-        allowNull: true,
-        type: Sequelize.STRING
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: 'https://mhpdoctor.com/wp-content/sabai/File/files/l_24e839fcb31a2d2ae79861b46482a8a8.png'
       },
       doctors_rating: {
         allowNull: true,
