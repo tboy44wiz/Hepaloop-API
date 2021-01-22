@@ -26,6 +26,10 @@
 ##### VisualStudioCode
 .vscode/*
 
+public
+public/
+public/*
+
 
 npm-debug.log*
 yarn-debug.log*
