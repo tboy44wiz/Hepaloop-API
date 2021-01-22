@@ -6,6 +6,7 @@ import bcrypt from 'bcryptjs';
 import db from '../database/models';
 import Response from '../utils/response';
 import JoiValidator from "../utils/joi_validator";
+import {json} from "sequelize";
 
 
 const { Doctors } = db;
@@ -149,8 +150,6 @@ class DoctorsController {
             const { id } = req.params;
             const requestBody = req.body;
 
-            console.log(payload);
-
             //  Validate the Request Body.
             const { error, value } = await JoiValidator.doctorsUpdateSchema.validate(requestBody);
             if (error) {
@@ -161,7 +160,6 @@ class DoctorsController {
                 );
                 return res.status(response.code).json(response);
             }
-            console.log(value);
 
             //  First check if a record has the staff_email existing.
             if (value.doctors_email) {
@@ -282,7 +280,6 @@ class DoctorsController {
                 );
                 return res.status(response.code).json(response);
             }
-            console.log(value);
 
             //  Check if Doctor already exist and create a new Doctor using the "value" gotten from the validated object.
             const [doctor, created] = await Doctors.findOrCreate({
@@ -402,6 +399,59 @@ class DoctorsController {
                 { doctor: formattedResponse }
             );
             res.status(response.code).json(response);
+
+        } catch (error) {
+            console.log(`ERROR::: ${error}`);
+
+            const response = new Response(
+                false,
+                500,
+                'Server error, please try again later.'
+            );
+            return res.status(response.code).json(response);
+        }
+    };
+
+
+    //  Uploading Users Profile Avatar.
+    static updateDoctorsAvatar = async (req, res) => {
+
+        try {
+            const payload = req.requestPayload;
+            const filename = req.file.filename;
+            const id = payload.id;
+            const avatarURL = `http://${req.headers.host}/uploads/${filename}`;
+            console.log(req.file);
+
+            //  Update the Doctors Profile Photo..
+            const updatedDoctor = await Doctors.update(
+                { doctors_avatar: avatarURL },
+                { where: { id } }
+                );
+            if (updatedDoctor[0] === 0) {
+                const response = new Response(
+                    false,
+                    400,
+                    "Failed to update profile photo."
+                );
+                return res.status(response.code).json(response);
+            }
+
+            //  Get the user back.
+            const doctor = await Doctors.findOne({
+                where: { id },
+                attributes: {
+                    exclude: ['doctors_password']
+                }
+            });
+
+            const response = new Response(
+                true,
+                200,
+                'Successfully updated profile photo.',
+                { doctor }
+            );
+            return res.status(response.code).json(response);
 
         } catch (error) {
             console.log(`ERROR::: ${error}`);

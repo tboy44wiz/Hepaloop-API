@@ -2,6 +2,7 @@
 
 import express from 'express';
 import dotenv from 'dotenv';
+import fs from "fs";
 
 import Response from './utils/response';
 import routes from './routes'
@@ -11,6 +12,12 @@ dotenv.config();
 
 //  Set Up Express App.
 const app = express();
+
+//  Public Folder.
+// app.use(express.static('./public'));
+
+// Create the "./public/uploads/" if the do not exist.
+!fs.existsSync(`./public/uploads/`) && fs.mkdirSync(`./public/uploads/`, { recursive: true });
 
 
 //  parse JSON-encoded bodies and URL-encoded bodies
