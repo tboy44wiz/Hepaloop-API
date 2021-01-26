@@ -23,9 +23,9 @@ const fileFilter = (req, file, callback) => {
     const extName = fileType.test(path.extname(file.originalname).toLowerCase());
 
     //  Check for Mime Type.
-    const mimeType = fileType.test(file.mimetype);
+    // const mimeType = fileType.test(file.mimetype);
 
-    if(extName && mimeType) {
+    if(extName) {
         return callback(null, true);
     }
     return callback('Error; Please select images only.', false);
@@ -35,8 +35,8 @@ const fileFilter = (req, file, callback) => {
 const upload = multer({
     storage: storage,
     limits: {fileSize: 100000},
-    // fileFilter: fileFilter,
-});
+    fileFilter: fileFilter,
+}).single('avatar');
 
 //  Uploading Image Function
 const userAvatarUpload = (req, res, next) => {
@@ -44,7 +44,7 @@ const userAvatarUpload = (req, res, next) => {
         if(error) {
             const response = new Response(
                 false,
-                600,
+                400,
                 (error.message) ? `Error: ${error.message}` : error
             );
             return res.status(response.code).json(response);
@@ -53,4 +53,4 @@ const userAvatarUpload = (req, res, next) => {
     });
 };
 
-export default upload
+export default userAvatarUpload

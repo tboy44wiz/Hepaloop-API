@@ -315,7 +315,7 @@ class PatientsController {
                 true,
                 201,
                 "Successfully created a patient.",
-                { patients: formattedResponse }
+                { patient: formattedResponse }
             );
             return res.status(response.code).json(response);
 

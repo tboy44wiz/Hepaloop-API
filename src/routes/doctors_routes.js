@@ -3,7 +3,7 @@
 import { Router } from 'express';
 import TokenVerification from '../utils/token_verification';
 import DoctorsController from '../controllers/doctors_controller';
-import upload from "../controllers/user_avatar_upload_controller";
+import userAvatarUpload from "../controllers/user_avatar_upload_controller";
 
 //  Set up Express Router.
 const doctorsRouter = Router();
@@ -62,7 +62,7 @@ doctorsRouter.post(
 doctorsRouter.put(
     '/update_avatar',
     TokenVerification.doctorsTokenVerification,
-    upload.single('avatar'),
+    userAvatarUpload,
     DoctorsController.updateDoctorsAvatar
 );
 

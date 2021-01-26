@@ -13,11 +13,11 @@ dotenv.config();
 //  Set Up Express App.
 const app = express();
 
-//  Public Folder.
-// app.use(express.static('./public'));
-
 // Create the "./public/uploads/" if the do not exist.
-!fs.existsSync(`./public/uploads/`) && fs.mkdirSync(`./public/uploads/`, { recursive: true });
+fs.existsSync(`./public/uploads/`) && fs.mkdirSync(`./public/uploads/`, { recursive: true });
+
+//  Public Folder.
+app.use(express.static('./public'));
 
 
 //  parse JSON-encoded bodies and URL-encoded bodies
