@@ -22,6 +22,13 @@ doctorsRouter.get(
     DoctorsController.getAllDoctors
 );
 
+//  Get all nearBy Doctors.
+doctorsRouter.get(
+    '/all_nearBy_doctors/:location',
+    TokenVerification.individualsTokenVerification,
+    DoctorsController.getAllNearByDoctors
+);
+
 //  Get a single Doctor.
 doctorsRouter.get(
     '/single_doctor/:id',

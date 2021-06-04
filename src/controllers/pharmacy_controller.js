@@ -161,7 +161,7 @@ class PharmacyController {
             }
 
             if (value.pharmacy_email) {
-                //  First check if a record has the staff_email existing.
+                //  First check if a record has the pharmacy_email existing.
                 const foundItem = await Pharmacy.findOne({
                     where: { pharmacy_email: value.pharmacy_email }
                 });
@@ -268,8 +268,6 @@ class PharmacyController {
 
         try {
             const requestBody = req.body;
-
-
             //  Validate the Request Body.
             const { error, value } = await JoiValidator.pharmacySchema.validate(requestBody);
             if (error) {
@@ -283,7 +281,7 @@ class PharmacyController {
 
             //  Check if Pharmacy already exist and create a new Pharmacy using the "value" gotten from the validated object.
             const [pharmacy, created] = await Pharmacy.findOrCreate({
-                where: { pharmacy_email: requestBody.pharmacy_email },
+                where: { pharmacy_email: value.pharmacy_email },
                 defaults: { ...value } //  "value" is gotten from the validated object.
             });
             if (!created) {
@@ -318,7 +316,7 @@ class PharmacyController {
                 true,
                 201,
                 "Successfully created a pharmacy.",
-                { pharmacy }
+                { pharmacy: formattedResponse }
             );
             return res.status(response.code).json(response);
 
@@ -384,11 +382,7 @@ class PharmacyController {
             );
 
             const formattedResponse = {
-                id,
-                pharmacy_name,
-                pharmacy_email,
-                pharmacy_phone,
-                pharmacy_logo,
+                ...pharmacy.dataValues,
                 token
             }
 
@@ -402,6 +396,85 @@ class PharmacyController {
 
         } catch (error) {
             console.log(`ERROR::: ${ error }`);
+
+            const response = new Response(
+                false,
+                500,
+                'Server error, please try again later.'
+            );
+            return res.status(response.code).json(response);
+        }
+    };
+
+
+    //  Uploading Users Profile Avatar.
+    static updatePharmacysAvatar = async (req, res) => {
+
+        try {
+            const payload = req.requestPayload;
+            const filename = req.file.filename;
+            const id = payload.id;
+            const avatarURL = `http://${req.headers.host}/uploads/${filename}`;
+            console.log(req.file);
+
+            //  Update the Pharmacy Profile Logo..
+            const updatedPharmacy = await Pharmacy.update(
+                { pharmacy_logo: avatarURL },
+                { where: { id } }
+                );
+            if (updatedPharmacy[0] === 0) {
+                const response = new Response(
+                    false,
+                    400,
+                    "Failed to update profile photo."
+                );
+                return res.status(response.code).json(response);
+            }
+
+            //  Get the user back.
+            const pharmacy = await Pharmacy.findOne({
+                where: { id },
+                attributes: {
+                    exclude: ['pharmacy_password']
+                }
+            });
+            if (!pharmacy) {
+                const response = new Response(
+                    false,
+                    404,
+                    "Email or Password is not correct."
+                );
+                return res.status(response.code).json(response);
+            }
+
+            const { pharmacy_name, pharmacy_email, pharmacy_phone, pharmacy_avatar } = pharmacy;
+
+            //  Create a Token that will be passed to the response.
+            const token = await jwt.sign(
+                { id, pharmacy_name, pharmacy_email, pharmacy_phone },
+                `${process.env.JWT_SECRET_KEY}`,
+                { expiresIn: "1d" }
+            );
+
+            const formattedResponse = {
+                id,
+                pharmacy_name,
+                pharmacy_email,
+                pharmacy_phone,
+                pharmacy_avatar,
+                token
+            }
+
+            const response = new Response(
+                true,
+                200,
+                'Successfully updated profile photo.',
+                { pharmacy: formattedResponse }
+            );
+            return res.status(response.code).json(response);
+
+        } catch (error) {
+            console.log(`ERROR::: ${error}`);
 
             const response = new Response(
                 false,

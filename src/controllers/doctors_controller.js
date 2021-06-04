@@ -102,6 +102,48 @@ class DoctorsController {
         }
     };
 
+    //  Get all nearBy Doctors.
+    static getAllNearByDoctors = async (req, res) => {
+
+        const { location } = req.params;
+        console.log("GGGGGGG::: ", location);
+
+        try {
+            const doctors = await Doctors.findAll({
+                attributes: {
+                    exclude: ['doctors_password']
+                },
+                where: { doctors_city: location }
+            });
+            if (!doctors) {
+                const response = new Response(
+                    false,
+                    404,
+                    "No doctor found."
+                );
+                return res.status(response.code).json(response);
+            }
+
+            const response = new Response(
+                true,
+                200,
+                'Successfully retrieved all doctors.',
+                { doctors }
+            );
+            return res.status(response.code).json(response);
+
+        } catch (error) {
+            console.log(`ERROR::: ${error}`);
+
+            const response = new Response(
+                false,
+                500,
+                'Server error, please try again later.'
+            );
+            return res.status(response.code).json(response);
+        }
+    };
+
     //  Get a single Doctor.
     static getSingleDoctor = async (req, res) => {
 
@@ -184,7 +226,7 @@ class DoctorsController {
                         "Failed to update doctor."
                     );
                     return res.status(response.code).json(response);
-                }
+                }               
 
                 const response = new Response(
                     true,
@@ -205,7 +247,6 @@ class DoctorsController {
                 return res.status(response.code).json(response);
             }
 
-
             const response = new Response(
                 true,
                 200,
@@ -225,6 +266,7 @@ class DoctorsController {
         }
     };
 
+    
     //  Delete a Doctor.
     static deleteDoctor = async (req, res) => {
 
@@ -336,8 +378,8 @@ class DoctorsController {
 
     //  Doctors Login.
     static loginDoctor = async (req, res) => {
-        try {
 
+        try {
             const requestBody = req.body;
 
             //  Validate the Request Body.
@@ -374,7 +416,7 @@ class DoctorsController {
                 return res.status(response.code).json(response);
             }
 
-            const { id, doctors_name, doctors_email, doctors_phone, doctors_avatar } = doctor;
+            const { id, doctors_name, doctors_email, doctors_phone } = doctor;
 
             //  Create a Token that will be passed to the response.
             const token = await jwt.sign(
@@ -384,11 +426,7 @@ class DoctorsController {
             );
 
             const formattedResponse = {
-                id,
-                doctors_name,
-                doctors_email,
-                doctors_phone,
-                doctors_avatar,
+                ...doctor.dataValues,
                 token
             }
 
@@ -444,12 +482,38 @@ class DoctorsController {
                     exclude: ['doctors_password']
                 }
             });
+            if (!doctor) {
+                const response = new Response(
+                    false,
+                    404,
+                    "Email or Password is not correct."
+                );
+                return res.status(response.code).json(response);
+            }
+
+            const { doctors_name, doctors_email, doctors_phone, doctors_avatar } = doctor;
+
+            //  Create a Token that will be passed to the response.
+            const token = await jwt.sign(
+                { id, doctors_name, doctors_email, doctors_phone },
+                `${process.env.JWT_SECRET_KEY}`,
+                { expiresIn: "1d" }
+            );
+
+            const formattedResponse = {
+                id,
+                doctors_name,
+                doctors_email,
+                doctors_phone,
+                doctors_avatar,
+                token
+            }
 
             const response = new Response(
                 true,
                 200,
                 'Successfully updated profile photo.',
-                { doctor }
+                { doctor: formattedResponse }
             );
             return res.status(response.code).json(response);
 
@@ -470,8 +534,6 @@ class DoctorsController {
     static sampleOption = async (req, res) => {
 
         try {
-
-
             const response = new Response(
                 true,
                 200,

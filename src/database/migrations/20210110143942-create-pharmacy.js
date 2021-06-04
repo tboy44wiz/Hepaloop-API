@@ -41,6 +41,14 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING
       },
+      pharmacy_DOR: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
+      pharmacy_profileInfo: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
       pharmacy_logo: {
         allowNull: false,
         type: Sequelize.STRING,

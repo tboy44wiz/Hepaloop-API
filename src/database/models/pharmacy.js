@@ -24,6 +24,8 @@ module.exports = (sequelize, DataTypes) => {
     pharmacy_city: DataTypes.STRING,
     pharmacy_state: DataTypes.STRING,
     pharmacy_country: DataTypes.STRING,
+    pharmacy_DOR: DataTypes.STRING,
+    pharmacy_profileInfo: DataTypes.STRING,
     pharmacy_logo: DataTypes.STRING,
     user_type: DataTypes.STRING
   }, {
@@ -32,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
     freezeTableName: true,
   });
 
-  //  Before the Records will be created, let's d the following.
+  //  Before the Records will be created, let's do the following.
   Pharmacy.beforeCreate(async (pharmacy) => {
     pharmacy.id = uuidV4();
   });

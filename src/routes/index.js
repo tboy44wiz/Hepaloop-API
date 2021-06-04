@@ -4,7 +4,7 @@ import { Router } from 'express';
 
 //  Import all the required routes.
 import doctorsRouter from './doctors_routes';
-import patientsRouter from './patients_routes';
+import individualsRouter from './individuals_routes';
 import hospitalsRouter from "./hospitals_routes";
 import pharmacyRouter from "./pharmacy_routes";
 
@@ -13,7 +13,7 @@ import pharmacyRouter from "./pharmacy_routes";
 const router = Router();
 
 router.use('/doctors', doctorsRouter);
-router.use('/patients', patientsRouter);
+router.use('/individuals', individualsRouter);
 router.use('/hospitals', hospitalsRouter);
 router.use('/pharmacy', pharmacyRouter);
 

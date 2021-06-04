@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Patients', {
+    await queryInterface.createTable('Individuals', {
       id: {
         allowNull: false,
         autoIncrement: false,
@@ -10,60 +10,60 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4
       },
-      patients_name: {
+      individuals_name: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      patients_email: {
+      individuals_email: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      patients_phone: {
+      individuals_phone: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      patients_password: {
+      individuals_password: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      patients_gender: {
+      individuals_gender: {
         allowNull: false,
         type: Sequelize.ENUM('Select Gender', 'Male', 'Female'),
         defaultValue: 'Select Gender'
       },
-      patients_DOB: {
+      individuals_DOB: {
         allowNull: true,
         type: Sequelize.STRING
       },
-      patients_age: {
+      individuals_age: {
         allowNull: true,
         type: Sequelize.INTEGER
       },
-      patients_address: {
+      individuals_address: {
         allowNull: true,
         type: Sequelize.STRING
       },
-      patients_city: {
+      individuals_city: {
         allowNull: true,
         type: Sequelize.STRING
       },
-      patients_state: {
+      individuals_state: {
         allowNull: true,
         type: Sequelize.STRING
       },
-      patients_country: {
+      individuals_country: {
         allowNull: true,
         type: Sequelize.STRING
       },
-      patients_height: {
+      individuals_height: {
         allowNull: true,
         type: Sequelize.STRING
       },
-      patients_weight: {
+      individuals_weight: {
         allowNull: true,
         type: Sequelize.STRING
       },
-      patients_avatar: {
+      individuals_avatar: {
         allowNull: false,
         type: Sequelize.STRING,
         defaultValue: 'https://www.clipartmax.com/png/middle/27-271750_pix-for-woman-face-clipart-woman-images-clip-art.png',
@@ -87,6 +87,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Patients');
+    await queryInterface.dropTable('Individuals');
   }
 };

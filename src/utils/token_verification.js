@@ -14,6 +14,7 @@ class TokenVerification {
                 req.headers['x-access-token'] ||
                 req.query.token ||
                 req.body.token;
+
             if (!token) {
                 const response = new Response(
                     false,
@@ -38,8 +39,8 @@ class TokenVerification {
     };
 
 
-    //  Patients Token Verification.
-    static patientsTokenVerification = async (req, res, next) => {
+    //  Individuals Token Verification.
+    static individualsTokenVerification = async (req, res, next) => {
 
         try {
             //  Get the token from the "Header, Query or Body" if available.
@@ -47,6 +48,7 @@ class TokenVerification {
                 req.headers['x-access-token'] ||
                 req.query.token ||
                 req.body.token;
+
             if (!token) {
                 const response = new Response(
                     false,
@@ -69,6 +71,74 @@ class TokenVerification {
             return res.status(response.code).json(response);
         }
     }
+
+
+    //  Pharmacy Token Verification.
+    static pharmacyTokenVerification = async (req, res, next) => {
+        try {
+            //  Get the token from the "Header, Query or Body" if available.
+            const token = req.headers.authorization ||
+                req.headers['x-access-token'] ||
+                req.query.token ||
+                req.body.token;
+
+            if (!token) {
+                const response = new Response(
+                    false,
+                    401,
+                    "Unauthorized, you did not provide any token."
+                );
+                return res.status(response.code).json(response);
+            }
+
+            //  Now append the decoded token to the the request body.
+                req.requestPayload = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
+            return next();
+
+        }catch (error) {
+            const response = new Response(
+                false,
+                401,
+                "Unauthorized, you have an invalid token."
+            );
+            return res.status(response.code).json(response);
+        }
+    };
+
+
+    //  Hospitals Token Verification.
+    static hospitalsTokenVerification = async (req, res, next) => {
+        try {
+            //  Get the token from the "Header, Query or Body" if available.
+            const token = req.headers.authorization ||
+                req.headers['x-access-token'] ||
+                req.query.token ||
+                req.body.token;
+
+            if (!token) {
+                const response = new Response(
+                    false,
+                    401,
+                    "Unauthorized, you did not provide any token."
+                );
+                return res.status(response.code).json(response);
+            }
+
+            //  Now append the decoded token to the the request body.
+            req.requestPayload = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
+            return next();
+
+        }catch (error) {
+            const response = new Response(
+                false,
+                401,
+                "Unauthorized, you have an invalid token."
+            );
+            return res.status(response.code).json(response);
+        }
+    };
 
 
     //  Other Token Verification.

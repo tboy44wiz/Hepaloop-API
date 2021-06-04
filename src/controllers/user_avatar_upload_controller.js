@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
 
 //  Multer File Filter.
 const fileFilter = (req, file, callback) => {
-    //  Allowed Expression.
+    //  Allowed Extensions.
     const fileType = /jpg|jpeg|png|gif/;
 
     //  Check Extensions.

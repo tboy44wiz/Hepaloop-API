@@ -21,8 +21,12 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      hospitals_address: {
+      hospitals_password: {
         allowNull: false,
+        type: Sequelize.STRING
+      },
+      hospitals_address: {
+        allowNull: true,
         type: Sequelize.STRING
       },
       hospitals_city: {
@@ -34,6 +38,14 @@ module.exports = {
         type: Sequelize.STRING
       },
       hospitals_country: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
+      hospitals_DOR: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
+      hospitals_profileInfo: {
         allowNull: true,
         type: Sequelize.STRING
       },

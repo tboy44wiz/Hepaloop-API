@@ -1,17 +1,31 @@
 'use strict';
 
+import http from 'http';
 import express from 'express';
 import dotenv from 'dotenv';
-import fs from "fs";
+import fs from 'fs';
+import socketIO from 'socket.io';
 
 import Response from './utils/response';
 import routes from './routes'
+import SocketIOController from "./controllers/socketIO_controller";
 
 dotenv.config();
 
 
 //  Set Up Express App.
 const app = express();
+const server = http.createServer(app);
+
+
+//  Set up socket.io
+// const io = socketIO(server);
+const io = socketIO(server, {
+    cors: {
+        origin: '*',
+    },
+});
+
 
 // Create the "./public/uploads/" if the do not exist.
 fs.existsSync(`./public/uploads/`) && fs.mkdirSync(`./public/uploads/`, { recursive: true });
@@ -52,6 +66,10 @@ app.get('/', (req, res) => {
 });
 
 
+//  Create Socket.IO Connection.
+SocketIOController.socketConnection(io);
+
+
 //  Create other Routes.
 app.use('/api/v1', routes);
 
@@ -60,6 +78,6 @@ const PORT = process.env.PORT || 5000;
 const HOST = process.env.HOST || 'localhost';
 const BASE_URL = process.env.BASE_URL || `http://${HOST}:${PORT}`;
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Express server running on port: ${PORT}, Please kindly visit ${BASE_URL}`);
 });

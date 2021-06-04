@@ -54,6 +54,14 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING
       },
+      doctors_SYOP: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
+      doctors_bioInfo: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
       doctors_avatar: {
         allowNull: false,
         type: Sequelize.STRING,

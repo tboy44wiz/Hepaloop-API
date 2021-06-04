@@ -8,18 +8,18 @@ import Response from '../utils/response';
 import JoiValidator from "../utils/joi_validator";
 
 
-const { Patients } = models;
+const { Individuals } = models;
 
-class PatientsController {
+class IndividualsController {
 
-    //  Create a single patient.
-    static createPatient = async (req, res) => {
+    //  Create a single individual.
+    static createIndividual = async (req, res) => {
 
         try {
             const requestBody = req.body;
 
             //  Validate the Request Body.
-            const { error, value } = await JoiValidator.patientsSchema.validate(requestBody);
+            const { error, value } = await JoiValidator.individualsSchema.validate(requestBody);
             if (error) {
                 const response = new Response(
                     false,
@@ -29,16 +29,16 @@ class PatientsController {
                 return res.status(response.code).json(response);
             }
 
-            //  Check if Patient already exist and create a new Patient using the "value" gotten from the validated object.
-            const [patient, created] = await Patients.findOrCreate({
-                where: { patients_email: value.patients_email },
+            //  Check if Individual already exist and create a new Individual using the "value" gotten from the validated object.
+            const [individual, created] = await Individuals.findOrCreate({
+                where: { individuals_email: value.individuals_email },
                 defaults: { ...value }
             });
             if (!created) {
                 const response = new Response(
                     false,
                     409,
-                    'Patient already exist.'
+                    'Individual already exist.'
                 );
                 return res.status(response.code).json(response);
             }
@@ -46,8 +46,8 @@ class PatientsController {
             const response = new Response(
                 true,
                 201,
-                'Successfully created a patient.',
-                { patient }
+                'Successfully created a individual.',
+                { individual }
             );
             return res.status(response.code).json(response);
 
@@ -63,20 +63,20 @@ class PatientsController {
         }
     };
 
-    //  Get all Patients.
-    static getAllPatients = async (req, res) => {
+    //  Get all Individuals.
+    static getAllIndividuals = async (req, res) => {
 
         try {
-            const patients = await Patients.findAll({
+            const individuals = await Individuals.findAll({
                 attributes: {
-                    exclude: ['patients_password']
+                    exclude: ['individuals_password']
                 }
             });
-            if (!patients) {
+            if (!individuals) {
                 const response = new Response(
                     false,
                     404,
-                    "No patient found."
+                    "No individual found."
                 );
                 return res.status(response.code).json(response);
             }
@@ -84,8 +84,8 @@ class PatientsController {
             const response = new Response(
                 true,
                 200,
-                'Successfully created a patient.',
-                { patients }
+                'Successfully created a individual.',
+                { individuals }
             );
             return res.status(response.code).json(response);
 
@@ -101,22 +101,22 @@ class PatientsController {
         }
     };
 
-    //  Get a single Patient.
-    static getSinglePatient = async (req, res) => {
+    //  Get a single Individual.
+    static getSingleIndividual = async (req, res) => {
 
         try {
             const { id } = req.params;
-            const patient = await Patients.findOne({
+            const individual = await Individuals.findOne({
                 where: { id },
                 attributes: {
-                    exclude: ['patients_password']
+                    exclude: ['individuals_password']
                 }
             });
-            if (!patient) {
+            if (!individual) {
                 const response = new Response(
                     false,
                     404,
-                    "No patient found.",
+                    "No individual found.",
                 );
                 return res.status(response.code).json(response);
             }
@@ -124,8 +124,8 @@ class PatientsController {
             const response = new Response(
                 true,
                 200,
-                'Patient retrieved successfully.',
-                { patient }
+                'Individual retrieved successfully.',
+                { individual }
             );
             return res.status(response.code).json(response);
 
@@ -142,7 +142,7 @@ class PatientsController {
     };
 
     //  Update a Staff.
-    static updatePatient = async (req, res) => {
+    static updateIndividual = async (req, res) => {
 
         try {
             const payload = req.requestPayload;
@@ -150,7 +150,7 @@ class PatientsController {
             const requestBody = req.body;
 
             //  Validate the Request Body.
-            const { error, value } = await JoiValidator.patientsUpdateSchema.validate(requestBody);
+            const { error, value } = await JoiValidator.individualsUpdateSchema.validate(requestBody);
             if (error) {
                 const response = new Response(
                     false,
@@ -160,10 +160,10 @@ class PatientsController {
                 return res.status(response.code).json(response);
             }
 
-            if (value.patients_email) {
+            if (value.individuals_email) {
                 //  First check if a record has the staff_email existing.
-                const foundItem = await Patients.findOne({
-                    where: { patients_email: value.patients_email }
+                const foundItem = await Individuals.findOne({
+                    where: { individuals_email: value.individuals_email }
                 });
                 if (foundItem) {
                     const response =  new Response(
@@ -174,13 +174,13 @@ class PatientsController {
                     return res.status(response.code).json(response);
                 }
 
-                //  If No record found with the same patients email, then update.
-                const updatedPatient = await Patients.update({ ...value }, { where: { id } });
-                if (updatedPatient[0] === 0) {
+                //  If No record found with the same individuals email, then update.
+                const updatedIndividual = await Individuals.update({ ...value }, { where: { id } });
+                if (updatedIndividual[0] === 0) {
                     const response =  new Response(
                         false,
                         400,
-                        "Failed to update patient."
+                        "Failed to update individual."
                     );
                     return res.status(response.code).json(response);
                 }
@@ -188,18 +188,18 @@ class PatientsController {
                 const response =  new Response(
                     true,
                     200,
-                    "Patient updated successfully."
+                    "Individual updated successfully."
                 );
                 return res.status(response.code).json(response);
             }
 
-            //  If No record found with the same patients email, then update.
-            const updatedPatient = await Patients.update({ ...value }, { where: { id } });
-            if (updatedPatient[0] === 0) {
+            //  If No record found with the same individuals email, then update.
+            const updatedIndividual = await Individuals.update({ ...value }, { where: { id } });
+            if (updatedIndividual[0] === 0) {
                 const response =  new Response(
                     false,
                     400,
-                    "Failed to update patient."
+                    "Failed to update individual."
                 );
                 return res.status(response.code).json(response);
             }
@@ -207,7 +207,7 @@ class PatientsController {
             const response =  new Response(
                 true,
                 200,
-                "Patient updated successfully."
+                "Individual updated successfully."
             );
             return res.status(response.code).json(response);
 
@@ -223,20 +223,20 @@ class PatientsController {
         }
     };
 
-    //  Delete a Patient.
-    static deletePatient = async (req, res) => {
+    //  Delete a Individual.
+    static deleteIndividual = async (req, res) => {
 
         try {
             const { id } = req.params;
 
-            const isDeleted = await Patients.destroy({
+            const isDeleted = await Individuals.destroy({
                 where: { id }
             });
             if (isDeleted !== 1) {
                 const response = new Response(
                     false,
                     404,
-                    "No patient found."
+                    "No individual found."
                 );
                 return res.status(response.code).json(response);
             }
@@ -244,7 +244,7 @@ class PatientsController {
             const response = new Response(
                 true,
                 200,
-                "Patient deleted successfully."
+                "Individual deleted successfully."
             );
             return res.status(response.code).json(response);
 
@@ -262,14 +262,14 @@ class PatientsController {
 
 
 
-    //  Patients SignUp.
-    static signUpPatient = async (req, res) => {
+    //  Individuals SignUp.
+    static signUpIndividual = async (req, res) => {
 
         try {
             const requestBody = req.body;
 
             //  Validate the Request Body.
-            const { error, value } = await JoiValidator.patientsSchema.validate(requestBody);
+            const { error, value } = await JoiValidator.individualsSchema.validate(requestBody);
             if (error) {
                 const response = new Response(
                     false,
@@ -279,43 +279,43 @@ class PatientsController {
                 return res.status(response.code).json(response);
             }
 
-            //  Check if Patient already exist and create a new Patient using the "value" gotten from the validated object.
-            const [patient, created] = await Patients.findOrCreate({
-                where: { patients_email: requestBody.patients_email },
+            //  Check if Individual already exist and create a new Individual using the "value" gotten from the validated object.
+            const [individual, created] = await Individuals.findOrCreate({
+                where: { individuals_email: value.individuals_email },
                 defaults: { ...value } //  "value" is gotten from the validated object.
             });
             if (!created) {
                 const response = new Response(
                     false,
                     409,
-                    "Patient already exist."
+                    "Individual already exist."
                 );
                 return res.status(response.code).json(response);
             }
 
-            const { id, patients_name, patients_email, patients_phone, patients_avatar } = patient;
+            const { id, individuals_name, individuals_email, individuals_phone, individuals_avatar } = individual;
 
             //  Create a Token that will be passed to the response.
             const token = await jwt.sign(
-                { id, patients_name, patients_email, patients_phone },
+                { id, individuals_name, individuals_email, individuals_phone },
                 `${ process.env.JWT_SECRET_KEY }`,
                 { expiresIn: "1d" }
             );
 
             const formattedResponse = {
                 id,
-                patients_name,
-                patients_email,
-                patients_phone,
-                patients_avatar,
+                individuals_name,
+                individuals_email,
+                individuals_phone,
+                individuals_avatar,
                 token
             }
 
             const response = new Response(
                 true,
                 201,
-                "Successfully created a patient.",
-                { patient: formattedResponse }
+                "Successfully created a individual.",
+                { individual: formattedResponse }
             );
             return res.status(response.code).json(response);
 
@@ -331,14 +331,14 @@ class PatientsController {
         }
     };
 
-    //  Patients Login.
-    static loginPatient = async (req, res) => {
+    //  Individuals Login.
+    static loginIndividual = async (req, res) => {
         try {
 
             const requestBody = req.body;
 
             //  Validate the Request Body.
-            const { error, value } = await JoiValidator.patientsLoginSchema.validate(requestBody);
+            const { error, value } = await JoiValidator.individualsLoginSchema.validate(requestBody);
             if (error) {
                 const response = new Response(
                     false,
@@ -348,10 +348,10 @@ class PatientsController {
                 return res.status(response.code).json(response);
             }
 
-            const patient = await Patients.findOne({
-                where: { patients_email: value.patients_email }
+            const individual = await Individuals.findOne({
+                where: { individuals_email: value.individuals_email }
             });
-            if (!patient) {
+            if (!individual) {
                 const response = new Response(
                     false,
                     404,
@@ -360,8 +360,8 @@ class PatientsController {
                 return res.status(response.code).json(response);
             }
 
-            //  Compare the encrypted patients_password.
-            const isPasswordMatched = await bcrypt.compareSync(value.patients_password, patient.patients_password );
+            //  Compare the encrypted individuals_password.
+            const isPasswordMatched = await bcrypt.compareSync(value.individuals_password, individual.individuals_password );
             if (!isPasswordMatched) {
                 const response = new Response(
                     false,
@@ -371,21 +371,17 @@ class PatientsController {
                 return res.status(response.code).json(response);
             }
 
-            const { id, patients_name, patients_email, patients_phone, patients_avatar } = patient;
+            const { id, individuals_name, individuals_email, individuals_phone, individuals_avatar } = individual;
 
             //  Create a Token that will be passed to the response.
             const token = await jwt.sign(
-                { id, patients_name, patients_email, patients_phone },
+                { id, individuals_name, individuals_email, individuals_phone },
                 `${ process.env.JWT_SECRET_KEY }`,
                 { expiresIn: "1d" }
             );
 
             const formattedResponse = {
-                id,
-                patients_name,
-                patients_email,
-                patients_phone,
-                patients_avatar,
+                ...individual.dataValues,
                 token
             }
 
@@ -393,7 +389,7 @@ class PatientsController {
                 true,
                 200,
                 "You're logged in successfully.",
-                { patient: formattedResponse }
+                { individual: formattedResponse }
             );
             res.status(response.code).json(response);
 
@@ -410,6 +406,60 @@ class PatientsController {
     };
 
 
+    //  Uploading Users Profile Avatar.
+    static updateIndividualsAvatar = async (req, res) => {
+
+        try {
+            const payload = req.requestPayload;
+            const filename = req.file.filename;
+            const id = payload.id;
+            const avatarURL = `http://${req.headers.host}/uploads/${filename}`;
+            console.log(req.file);
+
+            //  Update the Doctors Profile Photo..
+            const updatedIndividuals = await Individuals.update(
+                { individuals_avatar: avatarURL },
+                { where: { id } }
+            );
+            if (updatedIndividuals[0] === 0) {
+                const response = new Response(
+                    false,
+                    400,
+                    "Failed to update profile photo."
+                );
+                return res.status(response.code).json(response);
+            }
+
+            //  Get the user back.
+            const individual = await Individuals.findOne({
+                where: { id },
+                attributes: {
+                    exclude: ['individuals_password']
+                }
+            });
+
+            const response = new Response(
+                true,
+                200,
+                'Successfully updated profile photo.',
+                { individual }
+            );
+            return res.status(response.code).json(response);
+
+        } catch (error) {
+            console.log(`ERROR::: ${error}`);
+
+            const response = new Response(
+                false,
+                500,
+                'Server error, please try again later.'
+            );
+            return res.status(response.code).json(response);
+        }
+    };
+
+
+
 
     static sampleOption = async (req, res) => {
 
@@ -419,7 +469,7 @@ class PatientsController {
             const response = new Response(
                 true,
                 200,
-                'Successfully created a patient.'
+                'Successfully created a individual.'
             );
             return res.status(response.code).json(response);
 
@@ -436,4 +486,4 @@ class PatientsController {
     };
 }
 
-export default PatientsController;
+export default IndividualsController;

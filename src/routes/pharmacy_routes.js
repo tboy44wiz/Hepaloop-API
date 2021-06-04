@@ -1,7 +1,9 @@
 'use strict';
 
 import { Router } from 'express';
+import TokenVerification from '../utils/token_verification';
 import PharmacyController from "../controllers/pharmacy_controller";
+import userAvatarUpload from "../controllers/user_avatar_upload_controller";
 
 //  Set up Express Router.
 const pharmacyRouter = Router();
@@ -10,7 +12,7 @@ const pharmacyRouter = Router();
 //  Create a single pharmacy.
 pharmacyRouter.post(
     '/create_pharmacy',
-    // TokenVerification.pharmacyTokenVerification,
+    TokenVerification.pharmacyTokenVerification,
     PharmacyController.createPharmacy
 );
 
@@ -29,14 +31,14 @@ pharmacyRouter.get(
 //  Update a Staff.
 pharmacyRouter.put(
     '/update_pharmacy/:id',
-    // TokenVerification.pharmacyTokenVerification,
+    TokenVerification.pharmacyTokenVerification,
     PharmacyController.updatePharmacy
 );
 
 //  Delete a Pharmacy.
 pharmacyRouter.delete(
     '/delete_pharmacy/:id',
-    // TokenVerification.pharmacyTokenVerification,
+    TokenVerification.pharmacyTokenVerification,
     PharmacyController.deletePharmacy
 );
 
@@ -52,6 +54,16 @@ pharmacyRouter.post(
 pharmacyRouter.post(
     '/login',
     PharmacyController.loginPharmacy
+);
+
+
+
+//  Uploading Users Profile Avatar.
+pharmacyRouter.put(
+    '/update_avatar',
+    TokenVerification.pharmacyTokenVerification,
+    userAvatarUpload,
+    PharmacyController.updatePharmacysAvatar
 );
 
 export default pharmacyRouter;
